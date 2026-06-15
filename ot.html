@@ -1,53 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>McLarens Containers Depot 2</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            max-width: 100%;
-            max-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        img {
-            width: auto;
-            height: auto;
-            max-width: 100%;
-            max-height: 100vh;
-            object-fit: contain;
-            box-shadow: 0 0 20px rgba(0,0,0,0.8);
-        }
-        .header {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #fff;
-            background: rgba(0,0,0,0.7);
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 18px;
-            z-index: 10;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>McLARENS Depot 02</title>
+<style>
+
+:root{
+--bg:#050505;--gold:#ff7a00;--gold2:#ffb347;--white:#fff;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:#fff;font-family:Segoe UI,sans-serif;overflow-x:hidden}
+#particles{position:fixed;inset:0;z-index:-1}
+header{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px}
+.logo{width:180px;filter:drop-shadow(0 0 25px var(--gold));animation:float 4s ease-in-out infinite}
+h1{font-size:4rem;letter-spacing:4px}
+.gold{color:var(--gold2)}
+.hero p{max-width:700px;margin:20px auto;color:#ddd}
+.btn{display:inline-block;padding:14px 30px;background:var(--gold);color:#fff;text-decoration:none;border-radius:30px}
+section{padding:80px 8%}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.card{background:rgba(255,255,255,.05);backdrop-filter:blur(10px);border:1px solid rgba(255,122,0,.3);padding:25px;border-radius:20px;transition:.3s}
+.card:hover{transform:translateY(-8px);box-shadow:0 0 30px rgba(255,122,0,.3)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;text-align:center}
+.num{font-size:3rem;color:var(--gold);font-weight:bold}
+.timeline{border-left:3px solid var(--gold);padding-left:25px}
+.timeline div{margin:25px 0}
+.yard{
+height:260px;position:relative;background:linear-gradient(#090909,#141414);
+border-radius:20px;overflow:hidden;border:1px solid rgba(255,122,0,.3);
+}
+.container{position:absolute;width:120px;height:60px;background:#222;border:2px solid var(--gold)}
+.c1{left:20%;top:120px}
+.c2{left:28%;top:60px}
+.truck{position:absolute;bottom:30px;left:-250px;width:220px;height:60px;background:#222;border:2px solid var(--gold);animation:drive 10s linear infinite}
+footer{text-align:center;padding:40px;color:#aaa;border-top:1px solid #222}
+@keyframes drive{0%{left:-250px}100%{left:110%}}
+@keyframes float{50%{transform:translateY(-10px)}}
+
+
+
+    .open-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #image-popup {
+      padding: 20px;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      max-width: 90vw;
+      max-height: 90vh;
+      background-color: #050505;
+    }
+
+    #image-popup::backdrop {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .popup-img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 4px;
+    }
+
+    .close-btn {
+      margin-top: 15px;
+      padding: 5px 15px;
+      cursor: pointer;
+    }
+    
+.button-85 {
+  padding: 0.6em 2em;
+  border: none;
+  outline: none;
+  color: rgb(255, 255, 255);
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-85:before {
+  content: "";
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #ff7300,
+    #fffb00,
+    #48ff00,
+    #00ffd5,
+    #002bff,
+    #7a00ff,
+    #ff00c8,
+    #ff0000
+  );
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  -webkit-filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing-button-85 20s linear infinite;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+@keyframes glowing-button-85 {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.button-85:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #222;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+</style>
 </head>
 <body>
-    <div class="header">McLarens Containers (Pvt) Ltd - Depot 2</div>
-    <div class="container">
-        <img src="file_1111.jpg" alt="McLarens Containers">
-    </div>
+<canvas id="particles"></canvas>
+
+<header>
+<div class="hero">
+<img class="logo" src="MCL.png">
+<h1>McLARENS <span class="gold">DEPOT 02</span></h1>
+<p>Modern Inland Container Depot Experience. Inspired by McLarens Container operations, logistics excellence and container handling services.</p>
+<a href="#about" class="btn">Explore Depot</a>
+</div>
+</header>
+
+<section id="about" class="reveal">
+<h2 class="gold">Depot Overview</h2><br>
+<div class="stats">
+<div class="card"><div class="num" data-target="1500">0</div><p>TEU Capacity</p></div>
+<div class="card"><div class="num" data-target="24">0</div><p>Hours Operation</p></div>
+<div class="card"><div class="num" data-target="3">0</div><p>Acres Facility</p></div>
+<div class="card"><div class="num" data-target="5">0</div><p>High Stacking</p></div>
+</div>
+</section>
+
+
+
+<section class="reveal">
+<h2 class="gold">Services</h2><br>
+<div class="cards">
+<div class="card">Container Storage</div>
+<div class="card">Container Cleaning</div>
+<div class="card">Container Repairs</div>
+<div class="card">PTI Inspection</div>
+<div class="card">Transport Solutions</div>
+<div class="card">Yard Management</div>
+</div>
+</section>
+
+<section class="reveal">
+<h2 class="gold">Container Pickup Process Flow</h2><br>
+<div class="timeline">
+<div><h3>Truck Arrival</h3><p>The prime mover enters Depot 02.</p><p>Obtain an IN Ticket from the Guard Room.</p></div>
+<div><h3>Container Pickup</h3><p>Proceed to the counter and hand over the required documents.</p><p>The forklift operator retrieves the container from the yard..</p></div>
+<div><h3>Loading & Locking</h3><p>The container is loaded onto the trailer and secured properly.</p></div>
+<div><h3>Gate Out</h3><p>Present the loaded container to the Yard Supervisor for inspection.</p><p>Proceed to the counter and obtain the Gate Pass.</p><p>Hand over the duplicate copy of the Gate Pass to the Guard Room.</p><p>Exit the depot.</p></div>
+
+</div>
+</section>
+
+<section class="reveal">
+<h2 class="gold">Contact</h2><br>
+<div class="card">
+<p>Email: mcdepot.lk</p>    
+<p>McLARENS Containers (Pvt) Ltd</p>
+<p>Depot 02 - 47 Galudupita Rd, Welisara </p><br>
+<p>Depot 01: 0114 827 000</p>
+<p>Depot 02: 0112 956 930</p>
+<p>Depot 03: 0112 930 242</p><br>
+<p>Operation: +94 76 468 0188</p>
+</div>
+</section>
+
+  <button class="button-85" role="button" popovertarget="image-popup">More Details</button>
+
+  <div id="image-popup" popover>
+    <img class="popup-img" src="OT.jpg" alt="Popup Example">
+    <br>
+    <button class="button-85" popovertarget="image-popup" popovertargetaction="hide">Close</button>
+  </div>
+
+<footer>
+© McLARENS Depot 02
+</footer>
+
+<script>
+const c=document.getElementById('particles'),x=c.getContext('2d');
+function rs(){c.width=innerWidth;c.height=innerHeight}rs();onresize=rs;
+let p=[...Array(120)].map(()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,v:Math.random()+0.2}));
+(function a(){x.clearRect(0,0,c.width,c.height);
+p.forEach(i=>{i.y-=i.v;if(i.y<0)i.y=innerHeight;
+x.fillStyle='rgba(255,122,0,.7)';x.fillRect(i.x,i.y,2,2)});
+requestAnimationFrame(a)})();
+
+const obs=new IntersectionObserver(e=>e.forEach(i=>{if(i.isIntersecting)i.target.classList.add('show')}));
+document.querySelectorAll('.reveal').forEach(i=>obs.observe(i));
+
+document.querySelectorAll('.num').forEach(el=>{
+let t=+el.dataset.target,c=0;
+let s=setInterval(()=>{c+=Math.ceil(t/60);if(c>=t){c=t;clearInterval(s)}el.textContent=c},30);
+});
+</script>
 </body>
 </html>
