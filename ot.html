@@ -3,222 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ERROR 503 | GB</title>
+    <title>MCL DEPOT 2</title>
     <link rel="icon" type="image/x-icon" href="gblogo.png">
-    <style>
  
-        * {
+    
+    <style>
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background: #0d0e12;
-            color: #ffffff;
-            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
-            position: relative;
+            height: 100vh;
+            background-color: #f0f0f0;
+            overflow: hidden;
         }
-
-
-        body::before, body::after {
-            content: '';
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #ff007f, #7f00ff);
-            filter: blur(80px);
-            opacity: 0.15;
-            z-index: 0;
-            animation: floatGlow 8s infinite alternate ease-in-out;
+        .photo-container {
+            width: 1024px;
+            height: 1536px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            overflow: hidden;
         }
-
-        body::before {
-            top: 10%;
-            left: 10%;
-        }
-
-        body::after {
-            bottom: 10%;
-            right: 10%;
-            animation-delay: 4s;
-        }
-
-        @keyframes floatGlow {
-            0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(30px) scale(1.2); }
-        }
-
-
-        .container {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(16px);
-            padding: 2.5rem;
-            border-radius: 24px;
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            z-index: 1;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeInUp 0.8s forwards ease-out;
-        }
-
-        @keyframes fadeInUp {
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-
-        .logo-wrapper {
-            margin-bottom: 1.5rem;
-        }
-
-        .logo {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-            transition: transform 0.4s ease;
-        }
-
-        .logo:hover {
-            transform: rotate(360deg) scale(1.05);
-        }
-
-
-        .error-code {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #00f2fe, #4facfe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1;
-            margin-bottom: 0.5rem;
-            letter-spacing: -2px;
-        }
-
-        h2 {
-            font-size: 1.6rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #f1f1f1;
-        }
-
-        p {
-            color: #a0a5b5;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
-
-        .btn-primary {
-            display: inline-block;
+        img {
             width: 100%;
-            padding: 1rem 2rem;
-            background: linear-gradient(45deg, #ff007f, #7f00ff);
-            color: #fff;
-            text-decoration: none;
-            font-weight: 700;
-            border-radius: 12px;
-            font-size: 1rem;
-            letter-spacing: 0.5px;
-            box-shadow: 0 8px 24px rgba(127, 0, 255, 0.3);
-            transition: all 0.3s ease;
-            margin-bottom: 1.5rem;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 28px rgba(255, 0, 127, 0.4);
-        }
-
-        .btn-primary:active {
-            transform: translateY(-1px);
-        }
-
-        .divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.1);
-            margin: 1.5rem 0;
-            position: relative;
-        }
-
-        .divider::before {
-            content: 'EXPLORE';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #13151a;
-            padding: 0 10px;
-            font-size: 0.75rem;
-            color: #646c7c;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-
-        .links-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .btn-secondary {
-            display: inline-block;
-            padding: 0.8rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #d1d5db;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border-radius: 10px;
-            transition: all 0.2s ease;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
-            color: #fff;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <div class="logo-wrapper">
-            <img class="logo" src="gblogo.png">
-        </div>
-
-        <div class="error-code"> 503 Service Unavailable </div>
-        The site is currently down for maintenance. Please try again later.</h2><br>
-        <p><p>We're currently performing maintenance to improve performance and reliability. The site is temporarily unavailable. Please check back later. Thank you for your patience.</p></p>
-
-    
-      
-
-        <div class="divider"></div>
-        
-        <div class="links-grid">
-            <a href="https://goldenblack99.github.io/goldenblack/" class="btn-secondary">
-                About Me
-            </a>
-            <a href="https://gb.libertati/" target="_blank" class="btn-secondary">
-                GB Site
-            </a>
-        </div>
+    <div class="photo-container">
+        <img src="ot.html" alt="DETAILS">
     </div>
-
 </body>
 </html>
