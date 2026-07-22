@@ -46,7 +46,7 @@
       font-weight: bold;
       color: #334155;
     }
-    input[type="text"], input[type="number"], input[type="date"] {
+    input[type="text"], input[type="number"] {
       width: 100%;
       padding: 11px;
       font-size: 1.05em;
@@ -211,7 +211,7 @@
     Download Report as Image :)
   </button>
 
-  <!-- Bottom Filtering Panel (Detailed View) -->
+  <!-- Bottom Filtering Panel -->
   <div class="filtered-section" style="margin-top:40px; padding:25px; background:#a39ea7; border-radius:8px;">
     <h3>Filtered Containers - Detailed View</h3>
     
@@ -233,7 +233,7 @@
 let filteredInwardData = [];
 let filteredOutwardData = [];
 
-// ================== EXCEL PARSING ==================
+// ================== EXCEL PARSING (unchanged) ==================
 async function parseExcelFile(file, type) { 
   try {
     const arrayBuffer = await file.arrayBuffer();
@@ -255,17 +255,14 @@ async function parseExcelFile(file, type) {
       if (type === "inward") {
         if (i === 1) continue;               
         const colL = String(row[11] || '').trim().toUpperCase();
-        
         if (colL.includes("OCEAN NETWORK EXPRESS")) {
           skip = true;
           containerInfo = { row: i + 1, colD: String(row[3] || ''), colE: String(row[4] || ''), colL: String(row[11] || '') };
         }
-      } 
-      else if (type === "outward") {
+      } else if (type === "outward") {
         if (i === 2) continue;
         const colR = String(row[17] || '').trim();
         const colN = String(row[13] || '').trim().toUpperCase();
-        
         if (/^\d/.test(colR) && colN.includes("OCEAN NETWORK EXPRESS")) {
           skip = true;
           containerInfo = { row: i + 1, colD: String(row[3] || ''), colE: String(row[4] || ''), colN: String(row[13] || '') };
@@ -285,7 +282,6 @@ async function parseExcelFile(file, type) {
     else filteredOutwardData = filteredList;
 
     return { counts, filteredList };
-
   } catch (err) {
     console.error(err);
     alert("Error reading Excel file.");
@@ -293,7 +289,7 @@ async function parseExcelFile(file, type) {
   }
 }
 
-// Image Upload
+// Image Upload (unchanged)
 let uploadedImageURL = null;
 const tableUploadArea = document.getElementById('tableUploadArea');
 const imageFileInput = document.getElementById('imageUpload');
@@ -326,7 +322,7 @@ document.addEventListener('paste', e => {
   }
 });
 
-// Inward Upload
+// File uploads (unchanged)
 const inwardUploadArea = document.getElementById('inwardUploadArea');
 const inwardFileInput = document.getElementById('inwardExcel');
 const inwardStatus = document.getElementById('inwardStatus');
@@ -347,7 +343,6 @@ inwardFileInput.addEventListener('change', async e => {
   }
 });
 
-// Outward Upload
 const outwardUploadArea = document.getElementById('outwardUploadArea');
 const outwardFileInput = document.getElementById('outwardExcel');
 const outwardStatus = document.getElementById('outwardStatus');
@@ -370,9 +365,9 @@ outwardFileInput.addEventListener('change', async e => {
 
 // Generate Report
 function generateReport() {
-  const mainDate = document.getElementById('mainDate').value || '27-May-2026';
-  const oneDateFrom = document.getElementById('oneDateFrom').value || '19-Jul-2026';
-  const oneDateTo = document.getElementById('oneDateTo').value || '25-Jul-2026';
+  const mainDate = document.getElementById('mainDate').value || '27-Jul-2026';
+  const oneDateFrom = document.getElementById('oneDateFrom').value;
+  const oneDateTo = document.getElementById('oneDateTo').value;
 
   const codes = ["20OT","20FR","20GP","20RF","40FR","40GP","40HC","40HCRF","45HC","40OT"];
   
@@ -397,21 +392,16 @@ function generateReport() {
   const inFiltered = filteredInwardData.length;
   const outFiltered = filteredOutwardData.length;
 
-  let filteredHTML = '';
-  if (inFiltered > 0 || outFiltered > 0) {
-    filteredHTML = `
-      <div class="filtered-count">
-        <strong>Removal & Repo Containers (ONE)</strong><br><br>
-        Removal ( IN ): <strong>${inFiltered}</strong> containers <br>
-        Repo ( OUT ): <strong>${outFiltered}</strong> containers <br>
-      </div>`;
-  }
+  let filteredHTML = (inFiltered > 0 || outFiltered > 0) ? `
+    <div class="filtered-count">
+      <strong>Removal & Repo Containers (ONE)</strong><br><br>
+      Removal ( IN ): <strong>${inFiltered}</strong> containers <br>
+      Repo ( OUT ): <strong>${outFiltered}</strong> containers <br>
+    </div>` : '';
 
   const tableHTML = uploadedImageURL 
     ? `<img id="tableImage" src="${uploadedImageURL}" style="max-width:100%; height:auto;">`
-    : `<div style="padding:80px 20px; border:2px dashed #cbd5e1; border-radius:8px; text-align:center; color:#64748b;">
-         Daily Inventory Table Screenshot will appear here
-       </div>`;
+    : `<div style="padding:80px 20px; border:2px dashed #cbd5e1; border-radius:8px; text-align:center; color:#64748b;">Daily Inventory Table Screenshot will appear here</div>`;
 
   const fullHTML = `
     <div class="header">
@@ -442,21 +432,13 @@ function updateFilteredDisplay() {
   document.getElementById('inwardFilteredCount').textContent = filteredInwardData.length;
   document.getElementById('outwardFilteredCount').textContent = filteredOutwardData.length;
 
-  let inwardHTML = filteredInwardData.length === 0 ? 
+  document.getElementById('inwardFilteredList').innerHTML = filteredInwardData.length === 0 ? 
     '<div style="color:#888;">No filtered containers</div>' : 
-    filteredInwardData.map(item => `
-      <div style="padding:6px 0; border-bottom:1px solid #eee;">
-        Row ${item.row} | ${item.colD} | ${item.colE}
-      </div>`).join('');
-  document.getElementById('inwardFilteredList').innerHTML = inwardHTML;
+    filteredInwardData.map(item => `<div style="padding:6px 0; border-bottom:1px solid #eee;">Row ${item.row} | ${item.colD} | ${item.colE}</div>`).join('');
 
-  let outwardHTML = filteredOutwardData.length === 0 ? 
+  document.getElementById('outwardFilteredList').innerHTML = filteredOutwardData.length === 0 ? 
     '<div style="color:#888;">No filtered containers</div>' : 
-    filteredOutwardData.map(item => `
-      <div style="padding:6px 0; border-bottom:1px solid #eee;">
-        Row ${item.row} | ${item.colD} | ${item.colE}
-      </div>`).join('');
-  document.getElementById('outwardFilteredList').innerHTML = outwardHTML;
+    filteredOutwardData.map(item => `<div style="padding:6px 0; border-bottom:1px solid #eee;">Row ${item.row} | ${item.colD} | ${item.colE}</div>`).join('');
 }
 
 function downloadAsImage() {
@@ -472,23 +454,27 @@ function downloadAsImage() {
   });
 }
 
-// Auto Date
+// ================== AUTO DATE FIX ==================
 window.addEventListener('DOMContentLoaded', () => {
   const today = new Date();
   const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  
-  // Main Date
-  document.getElementById('mainDate').value = `\( {String(today.getDate()).padStart(2,'0')}- \){months[today.getMonth()]}-${today.getFullYear()}`;
-  
-  // ONE Movement Date Range (Previous 7 days)
-  const toDate = new Date(today);
-  toDate.setDate(today.getDate() - 1); // Yesterday
-  
-  const fromDate = new Date(toDate);
-  fromDate.setDate(toDate.getDate() - 6); // 7 days before yesterday
 
-  document.getElementById('oneDateFrom').value = `\( {String(fromDate.getDate()).padStart(2,'0')}- \){months[fromDate.getMonth()]}-${fromDate.getFullYear()}`;
-  document.getElementById('oneDateTo').value = `\( {String(toDate.getDate()).padStart(2,'0')}- \){months[toDate.getMonth()]}-${toDate.getFullYear()}`;
+  // Main Report Date
+  document.getElementById('mainDate').value = 
+    `\( {String(today.getDate()).padStart(2,'0')}- \){months[today.getMonth()]}-${today.getFullYear()}`;
+
+  // ONE Movement Reports - Previous 7 Days
+  const toDate = new Date(today);
+  toDate.setDate(today.getDate() - 1);
+
+  const fromDate = new Date(toDate);
+  fromDate.setDate(toDate.getDate() - 6);
+
+  document.getElementById('oneDateFrom').value = 
+    `\( {String(fromDate.getDate()).padStart(2,'0')}- \){months[fromDate.getMonth()]}-${fromDate.getFullYear()}`;
+
+  document.getElementById('oneDateTo').value = 
+    `\( {String(toDate.getDate()).padStart(2,'0')}- \){months[toDate.getMonth()]}-${toDate.getFullYear()}`;
 
   generateReport();
 });
