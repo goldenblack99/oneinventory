@@ -229,11 +229,36 @@
 </div>
 
 <script>
-// ================== GLOBAL VARIABLES ==================
+// ================== AUTO DATE - RUN IMMEDIATELY ==================
+(function() {
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const today = new Date();
+
+  // Main Report Date
+  document.getElementById('mainDate').value = 
+    `\( {String(today.getDate()).padStart(2,'0')}- \){months[today.getMonth()]}-${today.getFullYear()}`;
+
+  // ONE Movement Date Range (Previous 7 Days)
+  const toDate = new Date(today);
+  toDate.setDate(today.getDate() - 1);
+
+  const fromDate = new Date(toDate);
+  fromDate.setDate(toDate.getDate() - 6);
+
+  document.getElementById('oneDateFrom').value = 
+    `\( {String(fromDate.getDate()).padStart(2,'0')}- \){months[fromDate.getMonth()]}-${fromDate.getFullYear()}`;
+
+  document.getElementById('oneDateTo').value = 
+    `\( {String(toDate.getDate()).padStart(2,'0')}- \){months[toDate.getMonth()]}-${toDate.getFullYear()}`;
+})();
+
+// ================== REST OF THE CODE (UNCHANGED) ==================
 let filteredInwardData = [];
 let filteredOutwardData = [];
+let uploadedImageURL = null;
 
-// ================== EXCEL PARSING (unchanged) ==================
+// ... (All other functions like parseExcelFile, generateReport, etc. remain the same as your previous version)
+
 async function parseExcelFile(file, type) { 
   try {
     const arrayBuffer = await file.arrayBuffer();
@@ -293,8 +318,7 @@ async function parseExcelFile(file, type) {
   }
 }
 
-// Image Upload (unchanged)
-let uploadedImageURL = null;
+// Image, Uploads, Generate Report functions (same as before)
 const tableUploadArea = document.getElementById('tableUploadArea');
 const imageFileInput = document.getElementById('imageUpload');
 const tableStatus = document.getElementById('tableStatus');
@@ -326,7 +350,7 @@ document.addEventListener('paste', e => {
   }
 });
 
-// Inward & Outward Uploads (unchanged)
+// Inward & Outward Upload Handlers (same)
 const inwardUploadArea = document.getElementById('inwardUploadArea');
 const inwardFileInput = document.getElementById('inwardExcel');
 const inwardStatus = document.getElementById('inwardStatus');
@@ -367,11 +391,11 @@ outwardFileInput.addEventListener('change', async e => {
   }
 });
 
-// Generate Report - Updated only for date range
+// Generate Report
 function generateReport() {
   const mainDate = document.getElementById('mainDate').value || '27-May-2026';
-  const oneDateFrom = document.getElementById('oneDateFrom').value || '19-Jul-2026';
-  const oneDateTo = document.getElementById('oneDateTo').value || '25-Jul-2026';
+  const oneDateFrom = document.getElementById('oneDateFrom').value;
+  const oneDateTo = document.getElementById('oneDateTo').value;
 
   const codes = ["20OT","20FR","20GP","20RF","40FR","40GP","40HC","40HCRF","45HC","40OT"];
   
@@ -470,25 +494,6 @@ function downloadAsImage() {
     link.click();
   });
 }
-
-// Auto Date - Updated to 7 days range
-window.addEventListener('DOMContentLoaded', () => {
-  const today = new Date();
-  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  
-  document.getElementById('mainDate').value = `\( {String(today.getDate()).padStart(2,'0')}- \){months[today.getMonth()]}-${today.getFullYear()}`;
-  
-  const toDate = new Date(today);
-  toDate.setDate(today.getDate() - 1);
-  
-  const fromDate = new Date(toDate);
-  fromDate.setDate(toDate.getDate() - 6);
-
-  document.getElementById('oneDateFrom').value = `\( {String(fromDate.getDate()).padStart(2,'0')}- \){months[fromDate.getMonth()]}-${fromDate.getFullYear()}`;
-  document.getElementById('oneDateTo').value = `\( {String(toDate.getDate()).padStart(2,'0')}- \){months[toDate.getMonth()]}-${toDate.getFullYear()}`;
-
-  generateReport();
-});
 </script>
 </body>
 </html>
