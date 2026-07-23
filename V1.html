@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>McLarens ONE Daily Inventory Report</title>
+  <link rel="icon" type="image/x-icon" href="gblogo.png">
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
@@ -91,8 +92,6 @@
       font-size: 1.25em;
       margin-top: 35px;
     }
-    .download-btn:hover {
-        background-color: #000000;}
 
     .report-section {
       border: 2px solid #000000;
@@ -109,51 +108,37 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     }
 
-    .filtered-section {
-      margin-top: 40px;
-      padding: 25px;
-      background: #a39ea7;
-      border: 1px solid #e2e8f0;
+    .filtered-count {
+      margin: 30px 0;
+      padding: 20px;
+      background: #fff3f3;
+      border: 2px solid #e74c3c;
       border-radius: 8px;
+      text-align: center;
+      font-size: 1.1em;
     }
-    .filtered-section h3 {
-      color: #000000;
-      margin-bottom: 15px;
-    }
-    .filtered-list {
-      max-height: 350px;
-      overflow-y: auto;
-      background: white;
-      padding: 15px;
-      border-radius: 6px;
-      font-size: 0.95em;
-      line-height: 1.6;
-    }
-    .filtered-item {
-      padding: 6px 0;
-      border-bottom: 1px solid #f1f5f9;
-    }
-    .filtered-item:last-child { border-bottom: none; }
-
-    .status { font-size: 0.95em; color: #22c55e; margin-top: 8px; }
-    .error { color: #ef4444; }
   </style>
 </head>
 <body>
 
 <div class="container">
-
+    <h2>One Line Sunday Report(Without Filtering)</h2>
+    <a href="https://goldenblack99.github.io/oneinventory/V2.html" ><button class="sun" >Sunday Report</button></a>
+    <a href="https://goldenblack99.github.io/oneinventory/V3.html" ><button class="sun" >Weekday Report</button></a>
   <div class="input-area">
     <label>Main Report Date</label> 
     <input type="text" id="mainDate">
 
-    <label>ONE Movement Reports Date (Previous Date)</label>
-    <input type="text" id="oneDate" >
+    <label>Movement Reports Date (Previous Date)</label>
+    <input type="text" id="sunDate">
+    
+    <label>Movement Reports Date (Previous Sunday)</label>
+    <input type="text" id="oneDate">
 
-    <h3 style="margin-top:30px; color:#000000;"> Auto-Filler </h3>
+    <h3 style="margin-top:30px; color:#000000;">Auto-Filler</h3>
     
     <!-- Inward Upload -->
-    <div class="excel-section">
+    <div>
       <label>Upload Inward (rptdailyinward.xls)</label>
       <div class="upload-area" id="inwardUploadArea">
         <p><strong>Click to choose file</strong></p>
@@ -163,7 +148,7 @@
     </div>
 
     <!-- Outward Upload -->
-    <div class="excel-section">
+    <div>
       <label>Upload Outward (rptdailyoutward.xls)</label>
       <div class="upload-area" id="outwardUploadArea">
         <p><strong>Click to choose file</strong></p>
@@ -173,6 +158,7 @@
     </div>
 
     <h3>ONE Inward At (Manual if needed)</h3>
+    <label>20OT</label><input type="number" id="in20ot" value="0">
     <label>20FR</label><input type="number" id="in20fr" value="0">
     <label>20GP</label><input type="number" id="in20gp" value="0">
     <label>20RF</label><input type="number" id="in20rf" value="0">
@@ -181,8 +167,10 @@
     <label>40HC</label><input type="number" id="in40hc" value="0">
     <label>40HCRF</label><input type="number" id="in40hcrf" value="0">
     <label>45HC</label><input type="number" id="in45hc" value="0">
+    <label>40OT</label><input type="number" id="in40ot" value="0">
 
     <h3>ONE Outward At (Manual if needed)</h3>
+    <label>20OT</label><input type="number" id="out20ot" value="0">
     <label>20FR</label><input type="number" id="out20fr" value="0">
     <label>20GP</label><input type="number" id="out20gp" value="0">
     <label>20RF</label><input type="number" id="out20rf" value="0">
@@ -191,6 +179,7 @@
     <label>40HC</label><input type="number" id="out40hc" value="0">
     <label>40HCRF</label><input type="number" id="out40hcrf" value="0">
     <label>45HC</label><input type="number" id="out45hc" value="0">
+    <label>40OT</label><input type="number" id="out40ot" value="0">
 
     <label style="margin-top: 30px; font-size:1.1em;">Daily Inventory Table Screenshot</label>
     <div class="upload-area" id="tableUploadArea">
@@ -210,18 +199,18 @@
     Download Report as Image :)
   </button>
 
-  <!-- ==================== FILTERING SECTION ==================== -->
-  <div class="filtered-section">
-    <h3>Filtered Containers </h3>
+  <!-- Bottom Filtering Panel (Detailed View) -->
+  <div class="filtered-section" style="margin-top:40px; padding:25px; background:#a39ea7; border-radius:8px;">
+    <h3>Filtered Containers - Detailed View</h3>
     
     <div id="filteredInward" style="margin-bottom:30px;">
       <strong>INWARD <span id="inwardFilteredCount">0</span> Containers Filtered:</strong> 
-      <div id="inwardFilteredList" class="filtered-list"></div>
+      <div id="inwardFilteredList" class="filtered-list" style="max-height:300px; overflow-y:auto; background:white; padding:10px; border-radius:6px;"></div>
     </div>
 
     <div id="filteredOutward">
       <strong>OUTWARD <span id="outwardFilteredCount">0</span> Containers Filtered:</strong> 
-      <div id="outwardFilteredList" class="filtered-list"></div>
+      <div id="outwardFilteredList" class="filtered-list" style="max-height:300px; overflow-y:auto; background:white; padding:10px; border-radius:6px;"></div>
     </div>
   </div>
 
@@ -241,8 +230,7 @@ async function parseExcelFile(file, type) {
     const worksheet = workbook.Sheets[sheetName];
     const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 }); 
 
-    const counts = {'20FR':0,'20GP':0,'20RF':0,'40FR':0,'40GP':0,'40HC':0,'40HCRF':0,'45HC':0};
-    let filteredRemoved = 0;
+    const counts = {'20OT':0,'20FR':0,'20GP':0,'20RF':0,'40FR':0,'40GP':0,'40HC':0,'40HCRF':0,'45HC':0,'40OT':0};
     let filteredList = [];
 
     for (let i = 0; i < json.length; i++) {
@@ -254,17 +242,11 @@ async function parseExcelFile(file, type) {
 
       if (type === "inward") {
         if (i === 1) continue;               
-        const colL = String(row[11] || '').trim().toUpperCase();   // Column L
+        const colL = String(row[11] || '').trim().toUpperCase();
         
         if (colL.includes("OCEAN NETWORK EXPRESS")) {
           skip = true;
-          containerInfo = {
-            row: i + 1,
-            colD: String(row[3] || ''),   // D Column
-            colE: String(row[4] || ''),   // E Column (usually Size/Type)
-            colL: String(row[11] || ''),  // L Column
-            colM: String(row[12] || '')   // M Column
-          };
+          containerInfo = { row: i + 1, colD: String(row[3] || ''), colE: String(row[4] || ''), colL: String(row[11] || '') };
         }
       } 
       else if (type === "outward") {
@@ -274,36 +256,23 @@ async function parseExcelFile(file, type) {
         
         if (/^\d/.test(colR) && colN.includes("OCEAN NETWORK EXPRESS")) {
           skip = true;
-          containerInfo = {
-            row: i + 1,
-            colD: String(row[3] || ''),   // D Column
-            colE: String(row[4] || ''),   // E Column
-            colN: String(row[13] || ''),  // N Column
-            colO: String(row[14] || '')   // O Column
-          };
+          containerInfo = { row: i + 1, colD: String(row[3] || ''), colE: String(row[4] || ''), colN: String(row[13] || '') };
         }
       }
 
       if (skip) {
-        filteredRemoved++;
-        if (Object.keys(containerInfo).length > 1) {
-          filteredList.push(containerInfo);
-        }
+        if (Object.keys(containerInfo).length > 1) filteredList.push(containerInfo);
         continue;
       }
 
       const sizeType = String(row[4] || '').trim().toUpperCase();
-      if (counts.hasOwnProperty(sizeType)) {
-        counts[sizeType]++;
-      }
+      if (counts.hasOwnProperty(sizeType)) counts[sizeType]++;
     }
 
-    const added = Object.values(counts).reduce((a,b) => a + b, 0);
-    
     if (type === "inward") filteredInwardData = filteredList;
     else filteredOutwardData = filteredList;
 
-    return { counts, added, filteredRemoved, filteredList };
+    return { counts, filteredList };
 
   } catch (err) {
     console.error(err);
@@ -312,9 +281,8 @@ async function parseExcelFile(file, type) {
   }
 }
 
-
+// Image Upload
 let uploadedImageURL = null;
-
 const tableUploadArea = document.getElementById('tableUploadArea');
 const imageFileInput = document.getElementById('imageUpload');
 const tableStatus = document.getElementById('tableStatus');
@@ -322,29 +290,25 @@ const tableStatus = document.getElementById('tableStatus');
 function setImage(src) {
   uploadedImageURL = src;
   tableUploadArea.classList.add('has-image');
-  tableStatus.innerHTML = `<span style="color:#22c55e;">✓ Screenshot loaded successfully</span>`;
+  tableStatus.innerHTML = `<span style="color:#22c55e;">✓ Screenshot Upload successfully</span>`;
   generateReport();
 }
 
 tableUploadArea.addEventListener('click', () => imageFileInput.click());
-
 imageFileInput.addEventListener('change', e => {
-  const file = e.target.files[0];
-  if (file) {
+  if (e.target.files[0]) {
     const reader = new FileReader();
     reader.onload = ev => setImage(ev.target.result);
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(e.target.files[0]);
   }
 });
 
 document.addEventListener('paste', e => {
-  const items = e.clipboardData.items;
-  for (let i = 0; i < items.length; i++) {
-    if (items[i].type.indexOf('image') !== -1) {
-      const blob = items[i].getAsFile();
+  for (let item of e.clipboardData.items) {
+    if (item.type.indexOf('image') !== -1) {
       const reader = new FileReader();
       reader.onload = ev => setImage(ev.target.result);
-      reader.readAsDataURL(blob);
+      reader.readAsDataURL(item.getAsFile());
       break;
     }
   }
@@ -356,20 +320,17 @@ const inwardFileInput = document.getElementById('inwardExcel');
 const inwardStatus = document.getElementById('inwardStatus');
 
 inwardUploadArea.addEventListener('click', () => inwardFileInput.click());
-
 inwardFileInput.addEventListener('change', async e => {
   const file = e.target.files[0];
   if (!file) return;
-  inwardStatus.textContent = 'Processing inward...';
+  inwardStatus.textContent = 'Processing...';
   const result = await parseExcelFile(file, 'inward');
   if (result) {
-    const { counts, added, filteredRemoved } = result;
-    Object.keys(counts).forEach(code => {
+    Object.keys(result.counts).forEach(code => {
       const el = document.getElementById('in' + code.toLowerCase());
-      if (el) el.value = counts[code];
+      if (el) el.value = result.counts[code];
     });
-
-    inwardStatus.innerHTML = `Success! <strong>\<span style="color:#ef4444;">{filtered & Removed}</span>`;
+    inwardStatus.innerHTML = `Success! <strong>${result.filteredList.length} filtered</strong>`;
     generateReport();
   }
 });
@@ -380,58 +341,66 @@ const outwardFileInput = document.getElementById('outwardExcel');
 const outwardStatus = document.getElementById('outwardStatus');
 
 outwardUploadArea.addEventListener('click', () => outwardFileInput.click());
-
 outwardFileInput.addEventListener('change', async e => {
   const file = e.target.files[0];
   if (!file) return;
-  outwardStatus.textContent = 'Processing outward...';
+  outwardStatus.textContent = 'Processing...';
   const result = await parseExcelFile(file, 'outward');
   if (result) {
-    const { counts, added, filteredRemoved } = result;
-    Object.keys(counts).forEach(code => {
+    Object.keys(result.counts).forEach(code => {
       const el = document.getElementById('out' + code.toLowerCase());
-      if (el) el.value = counts[code];
+      if (el) el.value = result.counts[code];
     });
-
-    outwardStatus.innerHTML = `Success! <strong>\<span style="color:#ef4444;">{filtered & Removed}</span>`;
+    outwardStatus.innerHTML = `Success! <strong>${result.filteredList.length} filtered</strong>`;
     generateReport();
   }
 });
 
 // Generate Report
 function generateReport() {
-  const mainDate = document.getElementById('mainDate').value || '01-April-2026';
-  const oneDate = document.getElementById('oneDate').value || '01-April-2026';
+  const mainDate = document.getElementById('mainDate').value || '27-May-2026';
+  const oneDate = document.getElementById('oneDate').value || '26-May-2026';
+  const sunDate = document.getElementById('sunDate').value || '20-May-2026';
 
-  const inItems = ["20FR","20GP","20RF","40FR","40GP","40HC","40HCRF","45HC"].map(code => ({
-    code, qty: parseInt(document.getElementById('in'+code.toLowerCase()).value)||0
-  }));
-
+  const codes = ["20OT","20FR","20GP","20RF","40FR","40GP","40HC","40HCRF","45HC","40OT"];
+  
   let inwardList = '', inTotal = 0;
-  inItems.forEach(item => {
-    if (item.qty > 0) {
-      inwardList += `<li>• ${item.code} - ${String(item.qty).padStart(2, '0')}</li>`;
-      inTotal += item.qty;
+  codes.forEach(code => {
+    const qty = parseInt(document.getElementById('in'+code.toLowerCase()).value) || 0;
+    if (qty > 0) {
+      inwardList += `<li>• ${code} - ${String(qty).padStart(2, '0')}</li>`;
+      inTotal += qty;
     }
   });
-
-  const outItems = ["20FR","20GP","20RF","40FR","40GP","40HC","40HCRF","45HC"].map(code => ({
-    code, qty: parseInt(document.getElementById('out'+code.toLowerCase()).value)||0
-  }));
 
   let outwardList = '', outTotal = 0;
-  outItems.forEach(item => {
-    if (item.qty > 0) {
-      outwardList += `<li>• ${item.code} - ${String(item.qty).padStart(2, '0')}</li>`;
-      outTotal += item.qty;
+  codes.forEach(code => {
+    const qty = parseInt(document.getElementById('out'+code.toLowerCase()).value) || 0;
+    if (qty > 0) {
+      outwardList += `<li>• ${code} - ${String(qty).padStart(2, '0')}</li>`;
+      outTotal += qty;
     }
   });
+
+  // Filtered Count Only for Main Report
+  const inFiltered = filteredInwardData.length;
+  const outFiltered = filteredOutwardData.length;
+
+  let filteredHTML = '';
+  if (inFiltered > 0 || outFiltered > 0) {
+    filteredHTML = `
+      <div class="filtered-count">
+        <strong>Removal & Repo Containers (ONE)</strong><br><br>
+        Removal ( IN ): <strong>${inFiltered}</strong> containers <br>
+        Repo ( OUT ): <strong>${outFiltered}</strong> containers <br>
+      </div>`;
+    
+  }
 
   const tableHTML = uploadedImageURL 
     ? `<img id="tableImage" src="${uploadedImageURL}" style="max-width:100%; height:auto;">`
-    : `<div class="placeholder" style="padding:80px 20px; border:2px dashed #cbd5e1; border-radius:8px; text-align:center; color:#64748b;">
-         <p>Daily Inventory Table Screenshot will appear here</p>
-         <p style="font-size:0.95em;">(Paste with Ctrl+V or click above to upload)</p>
+    : `<div style="padding:80px 20px; border:2px dashed #cbd5e1; border-radius:8px; text-align:center; color:#64748b;">
+         Daily Inventory Table Screenshot will appear here
        </div>`;
 
   const fullHTML = `
@@ -441,16 +410,18 @@ function generateReport() {
     </div>
     ${tableHTML}
     <hr>
-    <h2 style="text-align:center; margin:45px 0 18px; color:#000000;">ONE INWARD AT</h2>
-    <p style="text-align:center; font-size:1.25em;">${oneDate}</p>
+    <h2 style="text-align:center; margin:45px 0 18px;">ONE INWARD AT</h2>
+    <p style="text-align:center; font-size:1.25em;">${oneDate} to ${sunDate}</p>
     <ul>${inwardList || '<li style="color:#64748b;">No items</li>'}</ul>
     <div class="total">TOTAL = ${inTotal}</div>
 
     <hr>
-    <h2 style="text-align:center; margin:45px 0 18px; color:#000000;">ONE OUTWARD AT</h2>
-    <p style="text-align:center; font-size:1.25em;">${oneDate}</p>
+    <h2 style="text-align:center; margin:45px 0 18px;">ONE OUTWARD AT</h2>
+    <p style="text-align:center; font-size:1.25em;">${oneDate} to ${sunDate}</p>
     <ul>${outwardList || '<li style="color:#64748b;">No items</li>'}</ul>
     <div class="total">TOTAL = ${outTotal}</div>
+
+    ${filteredHTML}
   `;
 
   document.getElementById('output').innerHTML = fullHTML;
@@ -458,94 +429,58 @@ function generateReport() {
 }
 
 function updateFilteredDisplay() {
-  // Inward
   document.getElementById('inwardFilteredCount').textContent = filteredInwardData.length;
-  let inwardHTML = '';
-  if (filteredInwardData.length === 0) {
-    inwardHTML = '<div style="color:#64748b;">No filtered containers</div>';
-  } else {
-    inwardHTML = filteredInwardData.map(item => `
-      <div class="filtered-item">
-        <strong>Row ${item.row}</strong><br>
-        D: ${item.colD} | E: ${item.colE} | L: ${item.colL} | M: ${item.colM}
-      </div>
-    `).join('');
-  }
+  document.getElementById('outwardFilteredCount').textContent = filteredOutwardData.length;
+
+  // Inward List
+  let inwardHTML = filteredInwardData.length === 0 ? 
+    '<div style="color:#888;">No filtered containers</div>' : 
+    filteredInwardData.map(item => `
+      <div style="padding:6px 0; border-bottom:1px solid #eee;">
+        Row ${item.row} | ${item.colD} | ${item.colE}
+      </div>`).join('');
   document.getElementById('inwardFilteredList').innerHTML = inwardHTML;
 
-  // Outward
-  document.getElementById('outwardFilteredCount').textContent = filteredOutwardData.length;
-  let outwardHTML = '';
-  if (filteredOutwardData.length === 0) {
-    outwardHTML = '<div style="color:#64748b;">No filtered containers</div>';
-  } else {
-    outwardHTML = filteredOutwardData.map(item => `
-      <div class="filtered-item">
-        <strong>Row ${item.row}</strong><br>
-        D: ${item.colD} | E: ${item.colE} | N: ${item.colN} | O: ${item.colO}
-      </div>
-    `).join('');
-  }
+  // Outward List
+  let outwardHTML = filteredOutwardData.length === 0 ? 
+    '<div style="color:#888;">No filtered containers</div>' : 
+    filteredOutwardData.map(item => `
+      <div style="padding:6px 0; border-bottom:1px solid #eee;">
+        Row ${item.row} | ${item.colD} | ${item.colE}
+      </div>`).join('');
   document.getElementById('outwardFilteredList').innerHTML = outwardHTML;
 }
 
 function downloadAsImage() {
   if (!uploadedImageURL) {
-    alert("Please paste or upload the Daily Inventory screenshot to continue!");
+    alert("Please paste or upload the Daily Inventory screenshot first!");
     return;
   }
-  const outputDiv = document.getElementById('output');
-  html2canvas(outputDiv, { scale: 3.0, backgroundColor: "#ffffff" }).then(canvas => {
+  html2canvas(document.getElementById('output'), { scale: 3, backgroundColor: "#ffffff" }).then(canvas => {
     const link = document.createElement('a');
     link.download = `McLarens_ONE_Report_${document.getElementById('mainDate').value.replace(/[^a-zA-Z0-9]/g,'')}.png`;
     link.href = canvas.toDataURL('image/png');
     link.click();
   });
 }
-window.addEventListener('DOMContentLoaded', (event) => {
-        const dateInput = document.getElementById('mainDate');
-        const today = new Date();
 
-        // Array to map month numbers to 3-letter month abbreviations
-        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+// Auto Date
+window.addEventListener('DOMContentLoaded', () => {
+  const today = new Date();
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  
+  document.getElementById('mainDate').value = `${String(today.getDate()).padStart(2,'0')}-${months[today.getMonth()]}-${today.getFullYear()}`;
+  
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 7);
+  document.getElementById('oneDate').value = `${String(yesterday.getDate()).padStart(2,'0')}-${months[yesterday.getMonth()]}-${yesterday.getFullYear()}`;
 
-        // Get day, month abbreviation, and 4-digit year
-        const day = String(today.getDate()).padStart(2, '0'); // Ensures 2 digits (e.g., '02')
-        const monthName = months[today.getMonth()];
-        const year = today.getFullYear();
+const sunday = new Date(today);
+  sunday.setDate(today.getDate() - 1);
+  document.getElementById('sunDate').value = `${String(sunday.getDate()).padStart(2,'0')}-${months[sunday.getMonth()]}-${sunday.getFullYear()}`;
 
-        // Combine into DD-MMM-YYYY format
-        const formattedDate = `${day}-${monthName}-${year}`;
-
-        // Set the value of the input field
-        dateInput.value = formattedDate;
-    });
-
-window.addEventListener('DOMContentLoaded', (event) => {
-        const previousDateInput = document.getElementById('oneDate');
-        
-        // 1. Get the current date
-        const today = new Date();
-        
-        // 2. Subtract 1 day to get yesterday's date
-        const yesterday = new Date(today);
-        yesterday.setDate(today.getDate() - 1);
-
-        // Array to map month numbers to 3-letter abbreviations
-        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-        // 3. Extract day, month, and year from yesterday's date object
-        const day = String(yesterday.getDate()).padStart(2, '0'); // Ensures 2 digits (e.g., '01')
-        const monthName = months[yesterday.getMonth()];
-        const year = yesterday.getFullYear();
-
-        // 4. Combine into DD-MMM-YYYY format
-        const formattedPreviousDate = `${day}-${monthName}-${year}`;
-
-        // 5. Assign it to the input field
-        previousDateInput.value = formattedPreviousDate;
-    });
-window.onload = generateReport;
+  generateReport();
+});
 </script>
 </body>
 </html>
