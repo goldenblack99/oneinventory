@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>McLarens ONE Daily Inventory Report</title>
-  <link rel="icon" type="image/x-icon" href="gblogo.png">
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <link rel="icon" type="image/x-icon" href="gblogo.png">
   <style>
     body {
       font-family: 'Roboto', serif;
@@ -117,12 +117,24 @@
       text-align: center;
       font-size: 1.1em;
     }
+    .sun {
+      background: #383838;
+      color: white;
+      padding: 3px 3px;
+      font-size: 1.08em;
+      border: none;
+      border-radius: px;
+      cursor: pointer;
+      margin: 1x 5px
+    }
   </style>
 </head>
 <body>
 
 <div class="container">
-
+    <h2>One Line Weekday Report</h2>
+    <a href="https://goldenblack99.github.io/oneinventory/V2.html" ><button class="sun" >Sunday Report</button></a>
+    <a href="https://goldenblack99.github.io/oneinventory/V1.html" ><button class="sun" >Non-Filterd Report</button></a>
   <div class="input-area">
     <label>Main Report Date</label> 
     <input type="text" id="mainDate">
@@ -153,7 +165,6 @@
     </div>
 
     <h3>ONE Inward At (Manual if needed)</h3>
-    <label>20OT</label><input type="number" id="in20ot" value="0">
     <label>20FR</label><input type="number" id="in20fr" value="0">
     <label>20GP</label><input type="number" id="in20gp" value="0">
     <label>20RF</label><input type="number" id="in20rf" value="0">
@@ -162,10 +173,8 @@
     <label>40HC</label><input type="number" id="in40hc" value="0">
     <label>40HCRF</label><input type="number" id="in40hcrf" value="0">
     <label>45HC</label><input type="number" id="in45hc" value="0">
-    <label>40OT</label><input type="number" id="in40ot" value="0">
 
     <h3>ONE Outward At (Manual if needed)</h3>
-    <label>20OT</label><input type="number" id="out20ot" value="0">
     <label>20FR</label><input type="number" id="out20fr" value="0">
     <label>20GP</label><input type="number" id="out20gp" value="0">
     <label>20RF</label><input type="number" id="out20rf" value="0">
@@ -174,7 +183,6 @@
     <label>40HC</label><input type="number" id="out40hc" value="0">
     <label>40HCRF</label><input type="number" id="out40hcrf" value="0">
     <label>45HC</label><input type="number" id="out45hc" value="0">
-    <label>40OT</label><input type="number" id="out40ot" value="0">
 
     <label style="margin-top: 30px; font-size:1.1em;">Daily Inventory Table Screenshot</label>
     <div class="upload-area" id="tableUploadArea">
@@ -225,7 +233,7 @@ async function parseExcelFile(file, type) {
     const worksheet = workbook.Sheets[sheetName];
     const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 }); 
 
-    const counts = {'20OT':0,'20FR':0,'20GP':0,'20RF':0,'40FR':0,'40GP':0,'40HC':0,'40HCRF':0,'45HC':0,'40OT':0};
+    const counts = {'20FR':0,'20GP':0,'20RF':0,'40FR':0,'40GP':0,'40HC':0,'40HCRF':0,'45HC':0};
     let filteredList = [];
 
     for (let i = 0; i < json.length; i++) {
@@ -356,7 +364,7 @@ function generateReport() {
   const mainDate = document.getElementById('mainDate').value || '27-May-2026';
   const oneDate = document.getElementById('oneDate').value || '26-May-2026';
 
-  const codes = ["20OT","20FR","20GP","20RF","40FR","40GP","40HC","40HCRF","45HC","40OT"];
+  const codes = ["20FR","20GP","20RF","40FR","40GP","40HC","40HCRF","45HC"];
   
   let inwardList = '', inTotal = 0;
   codes.forEach(code => {
@@ -467,7 +475,6 @@ window.addEventListener('DOMContentLoaded', () => {
   const yesterday = new Date(today);
   yesterday.setDate(today.getDate() - 1);
   document.getElementById('oneDate').value = `${String(yesterday.getDate()).padStart(2,'0')}-${months[yesterday.getMonth()]}-${yesterday.getFullYear()}`;
-
 
   generateReport();
 });
