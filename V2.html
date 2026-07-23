@@ -122,16 +122,18 @@
 <body>
 
 <div class="container">
-
+    <h2>One Line Sunday Report</h2>
+    <a href="https://goldenblack99.github.io/oneinventory/V3.html" ><button class="sun" >Weekday Report</button></a>
+    <a href="https://goldenblack99.github.io/oneinventory/V1.html" ><button class="sun" >Non-Filterd Report</button></a>
   <div class="input-area">
     <label>Main Report Date</label> 
     <input type="text" id="mainDate">
 
-    <label>ONE Movement Reports Date (Previous Date)</label>
-    <input type="text" id="oneDate">
-<h3>to</h3>
-<label>ONE Movement Reports Date (Previous 7 Date)</label>
+    <label>Movement Reports Date (Previous Date)</label>
     <input type="text" id="sunDate">
+    
+    <label>Movement Reports Date (Previous Sunday)</label>
+    <input type="text" id="oneDate">
 
     <h3 style="margin-top:30px; color:#000000;">Auto-Filler</h3>
     
@@ -358,6 +360,7 @@ outwardFileInput.addEventListener('change', async e => {
 function generateReport() {
   const mainDate = document.getElementById('mainDate').value || '27-May-2026';
   const oneDate = document.getElementById('oneDate').value || '26-May-2026';
+  const sunDate = document.getElementById('sunDate').value || '20-May-2026';
 
   const codes = ["20OT","20FR","20GP","20RF","40FR","40GP","40HC","40HCRF","45HC","40OT"];
   
@@ -391,6 +394,7 @@ function generateReport() {
         Removal ( IN ): <strong>${inFiltered}</strong> containers <br>
         Repo ( OUT ): <strong>${outFiltered}</strong> containers <br>
       </div>`;
+    
   }
 
   const tableHTML = uploadedImageURL 
@@ -407,13 +411,13 @@ function generateReport() {
     ${tableHTML}
     <hr>
     <h2 style="text-align:center; margin:45px 0 18px;">ONE INWARD AT</h2>
-    <p style="text-align:center; font-size:1.25em;">${oneDate}</p>
+    <p style="text-align:center; font-size:1.25em;">${oneDate} to ${sunDate}</p>
     <ul>${inwardList || '<li style="color:#64748b;">No items</li>'}</ul>
     <div class="total">TOTAL = ${inTotal}</div>
 
     <hr>
     <h2 style="text-align:center; margin:45px 0 18px;">ONE OUTWARD AT</h2>
-    <p style="text-align:center; font-size:1.25em;">${oneDate}</p>
+    <p style="text-align:center; font-size:1.25em;">${oneDate} to ${sunDate}</p>
     <ul>${outwardList || '<li style="color:#64748b;">No items</li>'}</ul>
     <div class="total">TOTAL = ${outTotal}</div>
 
@@ -468,11 +472,11 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('mainDate').value = `${String(today.getDate()).padStart(2,'0')}-${months[today.getMonth()]}-${today.getFullYear()}`;
   
   const yesterday = new Date(today);
-  yesterday.setDate(today.getDate() - 1);
+  yesterday.setDate(today.getDate() - 7);
   document.getElementById('oneDate').value = `${String(yesterday.getDate()).padStart(2,'0')}-${months[yesterday.getMonth()]}-${yesterday.getFullYear()}`;
 
 const sunday = new Date(today);
-  sunday.setDate(today.getDate() - 6);
+  sunday.setDate(today.getDate() - 1);
   document.getElementById('sunDate').value = `${String(sunday.getDate()).padStart(2,'0')}-${months[sunday.getMonth()]}-${sunday.getFullYear()}`;
 
   generateReport();
