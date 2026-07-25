@@ -254,7 +254,7 @@ async function parseExcelFile(file, type) {
         if (i === 1) continue;               
         const colL = String(row[11] || '').trim().toUpperCase();
         
-        if (colL.includes("OCEAN NETWORK EXPRESS")) {
+        if (colL.includes("AN NORK ESS")) {
           skip = true;
           containerInfo = { row: i + 1, colD: String(row[3] || ''), colE: String(row[4] || ''), colL: String(row[11] || '') };
         }
@@ -264,7 +264,7 @@ async function parseExcelFile(file, type) {
         const colR = String(row[17] || '').trim();
         const colN = String(row[13] || '').trim().toUpperCase();
         
-        if (/^\d/.test(colR) && colN.includes("OCEAN NETWORK EXPRESS")) {
+        if (/^\d/.test(colR) && colN.includes("AN NORK ESS")) {
           skip = true;
           containerInfo = { row: i + 1, colD: String(row[3] || ''), colE: String(row[4] || ''), colN: String(row[13] || '') };
         }
